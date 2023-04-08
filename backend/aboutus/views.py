@@ -23,6 +23,30 @@ def aboutus(request):
     data = get_parsed_data(ABOUT_US_URL)
     return Response(data, status=status.HTTP_200_OK)
 
+@api_view(['Get'])
+def history(request):
+    HISTORY_URL = '7ec11fc1167e4bdebb61527c654982fd'
+    data = get_parsed_data(HISTORY_URL)
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def governance(request):
+    GOVERNANCE_URL = '7611e94d7fa9415db1d2453253ecce4e'
+    data = get_parsed_data(GOVERNANCE_URL)
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def ourteam(request):
+    OUR_TEAM_URL = 'd64ee576792d48a4a3bbca2153795348'
+    data = get_parsed_data(OUR_TEAM_URL)
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def president(request):
+    PRESIDENT_URL = '44bcb9c8dbd542bfb24d967e4c95de26'
+    data = get_parsed_data(PRESIDENT_URL)
+    return Response(data, status=status.HTTP_200_OK)
+
 def get_parsed_data(id):
     url = NOTION_PAGE_URL.format(blockid=id)
     response = requests.get(url, headers=NOTION_HEADER)
