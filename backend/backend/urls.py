@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', TestAPIView.as_view()),
     path('', include('home.urls')),
+    path('aboutus/', include('aboutus.urls')),
 ]
