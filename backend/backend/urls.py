@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from notionConnection.views import TestAPIView
+from notionConnection.views import ContactUsAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', TestAPIView.as_view())
-
+    path('test/', ContactUsAPIView.as_view())
 ]
