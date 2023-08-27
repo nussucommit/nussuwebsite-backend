@@ -26,5 +26,7 @@ def home(request):
 def get_parsed_data(id):
     url = NOTION_PAGE_URL.format(blockid=id)
     response = requests.get(url, headers=NOTION_HEADER)
+    if response.status_code != 200:
+        return {'status_code': response.status_code, 'data': response.json()['message']}
     data = response.json()
     return parse(data)
