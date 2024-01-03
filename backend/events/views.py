@@ -19,7 +19,7 @@ NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
 def events(request):
-    EVENTS_URL = '4c7b695537044ccfa186d85ecfff7c3a'
+    EVENTS_URL = '60ed78155c1d4e858f0800ad226f8d4d'
     data = get_parsed_data(EVENTS_URL)
     return Response(data, status=status.HTTP_200_OK)
 
