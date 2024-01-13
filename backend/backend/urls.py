@@ -21,5 +21,8 @@ urlpatterns = [
     path('test/', TestAPIView.as_view()),
     path('', include('home.urls')),
     path('aboutus/', include('aboutus.urls')),
-    path('freshmen/', include('freshmen.urls'))
+    path('freshmen/', include('freshmen.urls')),
+    path('contact/', include('contact.urls')),
+    path('', include('events.urls')),
+
 ]
