@@ -61,7 +61,9 @@ def parse_text(data):
         elif (attribute == "color" and data["annotations"][attribute] != "default"):
             special_attribute[attribute] = data["annotations"][attribute]
 
-    result["attribute"] = special_attribute
+    if (len(special_attribute) > 0):
+        result["attribute"] = special_attribute
+
     return result
 
 def parse_quote(data):
