@@ -29,8 +29,20 @@ def parse_list(data):
             list.append(parse_text(i))
         elif (i["type"] == "quote"):
             list.append(parse_quote(i))
+        elif (i["type"] == "numbered_list_item"):
+            list.append(parse_numbered_list_item(i))
     return list
 
+def parse_numbered_list_item(data):
+    result = dict()
+    list = []
+    result["type"] = "numbered_list_item"
+    for i in data["numbered_list_item"]["text"]:
+        if (i["plain_text"] != ""):
+            list.append(parse_text(i))
+    result["type"] = "numbered_list_item"
+    result["content"] = list
+    return result
 
 def parse_heading(data):
     result = dict()
