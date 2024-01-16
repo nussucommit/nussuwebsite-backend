@@ -13,7 +13,6 @@ asttokens==2.0.5
 async-timeout==4.0.2
 atomicwrites==1.4.0
 attrs==22.1.0
-audioread==2.1.9
 Automat==20.2.0
 autopep8==1.6.0
 Babel==2.11.0
