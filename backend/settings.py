@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #Load Secret Key
 load_dotenv()
 
+# Static file directory for deployment
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'  
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGOSECRETKEY")
