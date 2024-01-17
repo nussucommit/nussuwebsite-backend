@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view
+from django.views.decorators.cache import cache_page
 from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework import status
@@ -18,6 +19,7 @@ NOTION_PAGE_URL = 'https://api.notion.com/v1/blocks/{blockid}/children'
 NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
+@cache_page(timeout=60 * 30)
 def contact(request):
     CONTACT_URL = '80fc40185db84c88bd30824a10add0de'
     data = get_parsed_data(CONTACT_URL)
