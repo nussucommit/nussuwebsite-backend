@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view
+from django.core.cache import cache
 from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,8 +18,16 @@ NOTION_PAGE_URL = 'https://api.notion.com/v1/blocks/{blockid}/children'
 NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
-def freshmen(request): # 
+def freshmen(request):  
     FRESHMEN_URL = '73897785417c4075b00b7a34064e08c7'
+
+    cache_key = 'freshmen'
+    data = cache.get(cache_key)
+    
+    if data is None:
+        data = get_parsed_data(FRESHMEN_URL)
+        cache.set(key=cache_key, value=data, timeout=60 * 30)
+
     data = get_parsed_data(FRESHMEN_URL)
     return Response(data, status=status.HTTP_200_OK)
 

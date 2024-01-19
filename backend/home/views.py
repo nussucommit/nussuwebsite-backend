@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view
+from django.core.cache import cache
 from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,7 +21,14 @@ NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 @api_view(['Get'])
 def home(request):
     HOME_URL = 'df0fa3fd940b46399b33e6462d964d5c'
-    data = get_parsed_data(HOME_URL)
+
+    cache_key = 'home'
+    data = cache.get(cache_key)
+
+    if data is None:
+        data = get_parsed_data(HOME_URL)
+        cache.set(key=cache_key, value=data, timeout=60 * 30)
+
     return Response(data, status=status.HTTP_200_OK)
 
 def get_parsed_data(id):
