@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,10 +19,16 @@ NOTION_PAGE_URL = 'https://api.notion.com/v1/blocks/{blockid}/children'
 NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
-@cache_page(timeout=60 * 30)
 def events(request):
     EVENTS_URL = '60ed78155c1d4e858f0800ad226f8d4d'
-    data = get_parsed_data(EVENTS_URL)
+
+    cache_key = 'events'
+    data = cache.get(cache_key)
+
+    if data is None:
+        data = get_parsed_data(EVENTS_URL)
+        cache.set(key=cache_key, value=data, timeout=60 * 30)
+
     return Response(data, status=status.HTTP_200_OK)
 
 def get_parsed_data(id):
