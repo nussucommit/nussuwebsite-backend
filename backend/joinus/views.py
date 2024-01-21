@@ -17,9 +17,9 @@ NOTION_PAGE_URL = 'https://api.notion.com/v1/blocks/{blockid}/children'
 NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
-def freshmen(request):  
-    FRESHMEN_URL = '73897785417c4075b00b7a34064e08c7'
-    data = get_parsed_data(FRESHMEN_URL)
+def joinus(request):
+    JOINUS_URL = 'bda84ac388784fd4a1ad13a78a20ed4a'
+    data = get_parsed_data(JOINUS_URL)
     return Response(data, status=status.HTTP_200_OK)
 
 def get_parsed_data(id):
