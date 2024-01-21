@@ -24,5 +24,6 @@ urlpatterns = [
     path('freshmen/', include('freshmen.urls')),
     path('contact/', include('contact.urls')),
     path('', include('events.urls')),
-    path('joinus/', include('joinus.urls'))
+    path('joinus/', include('joinus.urls')),
+    path("__debug__/", include("debug_toolbar.urls"))
 ]
