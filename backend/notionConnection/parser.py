@@ -31,6 +31,8 @@ def parse_list(data):
             list.append(parse_quote(i))
         elif (i["type"] == "numbered_list_item"):
             list.append(parse_numbered_list_item(i))
+        elif (i["type"] == "file"):
+            list.append(parse_file(i))
     return list
 
 def parse_numbered_list_item(data):
@@ -73,10 +75,9 @@ def parse_text(data):
         elif (attribute == "color" and data["annotations"][attribute] != "default"):
             special_attribute[attribute] = data["annotations"][attribute]
 
-        if (data["text"]["link"]):
-            special_attribute["link"] = data["text"]["link"]["url"]
+    if (len(special_attribute) > 0):
+        result["attribute"] = special_attribute
 
-    result["attribute"] = special_attribute
     return result
 
 def parse_quote(data):
@@ -128,4 +129,18 @@ def parse_image(data):
     result["type"] = "image"
     imagetype = data[data["type"]]["type"]
     result["content"] = data[data["type"]][imagetype]["url"]
+    return result
+
+def parse_file(data):
+    result = dict()
+    result["type"] = "file"
+
+    # can be external of file type
+    type = data["file"]["type"]
+
+    if (type == "external"):
+        result["url"] = data["file"]["external"]["url"]
+    else:
+        result["url"] = data["file"]["file"]["url"]
+
     return result
