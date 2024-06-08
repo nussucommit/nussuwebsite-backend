@@ -116,9 +116,10 @@ def parse_table(data):
     table = response.json()
     #Assume that table does not have children inside the block
     list = []
-    for i in table["results"]:
-        for cell in i["table_row"]["cells"]:
-            list.extend(parse_list(cell))
+    if "results" in table:
+        for i in table["results"]:
+            for cell in i["table_row"]["cells"]:
+                list.extend(parse_list(cell))
         
     result["type"] = "table_row"
     result["content"] = list
