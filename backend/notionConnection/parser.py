@@ -101,8 +101,8 @@ def parse_bullet_list(data):
             url = 'https://api.notion.com/v1/blocks/' + data["id"] + '/children'
             headers = {'Notion-Version': version, 'Authorization': token}
             response = requests.get(url, headers=headers)
-            data = response.json()
-            bullet_item["children"] = parse(data)
+            responseData = response.json()
+            bullet_item["children"] = parse(responseData)
 
         list.append(bullet_item)
     result["content"] = list
