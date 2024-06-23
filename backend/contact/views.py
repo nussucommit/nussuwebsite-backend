@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view
+from django.core.cache import cache
 from dotenv import load_dotenv
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,6 +21,14 @@ NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 @api_view(['Get'])
 def contact(request):
     CONTACT_URL = '80fc40185db84c88bd30824a10add0de'
+
+    cache_key = 'contact'
+    data = cache.get(cache_key)
+
+    if data is None:
+        data = get_parsed_data(CONTACT_URL)
+        cache.set(key=cache_key, value=data, timeout=60 * 30)
+
     data = get_parsed_data(CONTACT_URL)
     return Response(data, status=status.HTTP_200_OK)
 
