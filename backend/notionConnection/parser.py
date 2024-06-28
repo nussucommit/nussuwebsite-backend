@@ -101,8 +101,8 @@ def parse_bullet_list(data):
             url = 'https://api.notion.com/v1/blocks/' + data["id"] + '/children'
             headers = {'Notion-Version': version, 'Authorization': token}
             response = requests.get(url, headers=headers)
-            data = response.json()
-            bullet_item["children"] = parse(data)
+            responseData = response.json()
+            bullet_item["children"] = parse(responseData)
 
         list.append(bullet_item)
     result["content"] = list
@@ -116,9 +116,10 @@ def parse_table(data):
     table = response.json()
     #Assume that table does not have children inside the block
     list = []
-    for i in table["results"]:
-        for cell in i["table_row"]["cells"]:
-            list.extend(parse_list(cell))
+    if "results" in table:
+        for i in table["results"]:
+            for cell in i["table_row"]["cells"]:
+                list.extend(parse_list(cell))
         
     result["type"] = "table_row"
     result["content"] = list
