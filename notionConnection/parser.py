@@ -49,8 +49,17 @@ def parse_numbered_list_item(data):
 def parse_heading(data):
     result = dict()
     result["type"] = "heading"
-    result["content"] = data[data["type"]]["text"][0]["plain_text"]
+    
+    # quick and dirty fix for notion's buggy API being returned for events page
+    textArray = data[data["type"]]["text"]
+    for i in range(len(textArray)):
+        if textArray[i]["plain_text"] != "":
+            result["content"] = textArray[i]["plain_text"]
+            break
+
+    # result["content"] = data[data["type"]]["text"][0]["plain_text"]
     return result
+
 
 def parse_paragraph(data):
     list = []
