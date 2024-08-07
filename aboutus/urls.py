@@ -5,6 +5,6 @@ urlpatterns = [
   path('aboutus/', views.aboutus),
   path('history/', views.history),
   path('governance/', views.governance),
-  path('ourteam/', views.ourteam),
+  path('ourteam/', include('ourteam.urls')),
   path('president/', views.president),
 ]
