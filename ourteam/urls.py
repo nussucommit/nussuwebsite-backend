@@ -1,5 +1,5 @@
 from django.urls import path
-from aboutus import views
+from ourteam import views
 
 urlpatterns = [
   path('presidential/', views.presidential),
