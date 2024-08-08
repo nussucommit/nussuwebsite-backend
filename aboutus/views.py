@@ -35,11 +35,11 @@ def governance(request):
     data = get_parsed_data(GOVERNANCE_URL)
     return Response(data, status=status.HTTP_200_OK)
 
-# @api_view(['Get'])
-# def ourteam(request):
-#     OUR_TEAM_URL = 'd64ee576792d48a4a3bbca2153795348'
-#     data = get_parsed_data(OUR_TEAM_URL)
-#     return Response(data, status=status.HTTP_200_OK)
+@api_view(['Get'])
+def ourteam(request):
+    OUR_TEAM_URL = 'd64ee576792d48a4a3bbca2153795348'
+    data = get_parsed_data(OUR_TEAM_URL)
+    return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['Get'])
 def president(request):
