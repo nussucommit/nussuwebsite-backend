@@ -50,11 +50,12 @@ def submit_feedback(request):
     # Send auto-reply to the user
     try:
         send_mail(
-            subject='Auto Reply From Protechs Nutrition',
+            subject='Auto Reply From NUS Student Union',
             message='Thank you for your message. We will get back to you soon.',
             from_email=SENDER_EMAIL,
             recipient_list=[email],
         )
+        
     except Exception as e:
         return Response({"error": "Failed to send auto reply", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
