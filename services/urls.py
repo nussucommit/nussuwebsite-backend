@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from services import views
 
 urlpatterns = [
@@ -7,5 +7,5 @@ urlpatterns = [
   path('resiliencefund/', views.resilienceFund),
   path('logisticsrental/', views.logisticsRental),
   path('zoomLicense/', views.zoomLicense),
-  path('publicitymanagement/', views.publicityManagement),
+  path('publicitymanagement/', include('publicity.urls')),
 ]
