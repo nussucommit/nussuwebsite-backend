@@ -5,12 +5,15 @@ import requests
 
 dotenv_path = Path('backend/.env')
 load_dotenv(dotenv_path)
-token = os.getenv('token')
-version = os.getenv('version')
+token = os.getenv('NOTION_API_KEY')
+version = os.getenv('VERSION')
 
 def parse(data):
-    if (data["object"] == "list"):
-        return parse_list(data["results"])
+    if isinstance(data, list):
+        return parse_list(data)
+    
+    if isinstance(data, dict) and data.get("object") == "list":
+        return parse_list(data.get("results", []))
 
 def parse_list(data):
     list = []
@@ -40,9 +43,18 @@ def parse_numbered_list_item(data):
     list = []
     result["type"] = "numbered_list_item"
     for i in data["numbered_list_item"]["text"]:
-        if (i["plain_text"] != ""):
+        if i["plain_text"]:
             list.append(parse_text(i))
-    result["type"] = "numbered_list_item"
+    
+    # Handle children recursively (similar to bulleted list items)
+    if data.get("has_children"):
+        url = 'https://api.notion.com/v1/blocks/' + data["id"] + '/children'
+        headers = {'Notion-Version': version, 'Authorization': f'Bearer {token}'}
+        response = requests.get(url, headers=headers)
+        response_data = response.json()
+        
+        result["children"] = parse(response_data)
+    
     result["content"] = list
     return result
 
@@ -50,16 +62,12 @@ def parse_heading(data):
     result = dict()
     result["type"] = "heading"
     
-    # quick and dirty fix for notion's buggy API being returned for events page
     textArray = data[data["type"]]["text"]
     for i in range(len(textArray)):
         if textArray[i]["plain_text"] != "":
             result["content"] = textArray[i]["plain_text"]
             break
-
-    # result["content"] = data[data["type"]]["text"][0]["plain_text"]
     return result
-
 
 def parse_paragraph(data):
     list = []
@@ -80,13 +88,13 @@ def parse_text(data):
     for attribute in data["annotations"]:
         if (attribute != "color" and data["annotations"][attribute] == True):
             special_attribute[attribute] = True
-
         elif (attribute == "color" and data["annotations"][attribute] != "default"):
             special_attribute[attribute] = data["annotations"][attribute]
         
-        if (data["text"]["link"]):
-            special_attribute["link"] = data["text"]["link"]["url"]
+    if (data["text"].get("link")):
+        special_attribute["link"] = data["text"]["link"]["url"]
 
+    result["annotations"] = special_attribute
     return result
 
 def parse_quote(data):
@@ -106,24 +114,29 @@ def parse_bullet_list(data):
     list = []
     for i in data["bulleted_list_item"]["text"]:
         bullet_item = parse_text(i)
+        
+        # Handle children recursively
         if data["has_children"]:
             url = 'https://api.notion.com/v1/blocks/' + data["id"] + '/children'
-            headers = {'Notion-Version': version, 'Authorization': token}
+            headers = {'Notion-Version': version, 'Authorization': f'Bearer {token}'}
             response = requests.get(url, headers=headers)
-            responseData = response.json()
-            bullet_item["children"] = parse(responseData)
-
+            response_data = response.json()
+            
+            # Recursively parse the children
+            bullet_item["children"] = parse(response_data)
+        
         list.append(bullet_item)
+    
     result["content"] = list
     return result
 
 def parse_table(data):
     result = dict()
     url = 'https://api.notion.com/v1/blocks/' + data["id"] + '/children'
-    headers = {'Notion-Version': version, 'Authorization': token}
+    headers = {'Notion-Version': version, 'Authorization': f'Bearer {token}'}
     response = requests.get(url, headers=headers)
     table = response.json()
-    #Assume that table does not have children inside the block
+
     list = []
     if "results" in table:
         for i in table["results"]:
@@ -145,10 +158,8 @@ def parse_file(data):
     result = dict()
     result["type"] = "file"
 
-    # can be external of file type
     type = data["file"]["type"]
-
-    if (type == "external"):
+    if type == "external":
         result["url"] = data["file"]["external"]["url"]
     else:
         result["url"] = data["file"]["file"]["url"]
