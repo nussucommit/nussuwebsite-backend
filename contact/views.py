@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from dotenv import load_dotenv
 from pathlib import Path
 import os
@@ -32,6 +34,14 @@ def submit_feedback(request):
     if not (full_name and email and subject and question):
         return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+    # Validate email format
+    email_validator = EmailValidator()
+    try:
+        email_validator(email)
+    except ValidationError:
+        return Response({"error": "Invalid email address"}, status=status.HTTP_400_BAD_REQUEST)
+    
     # Email configuration
     SENDER_EMAIL = os.getenv('EMAIL_HOST_USER')
     RECEIVER_EMAIL = SENDER_EMAIL  # Feedback goes to the company email
@@ -42,7 +52,7 @@ def submit_feedback(request):
             subject=f"Feedback: {subject} from {full_name}",
             message=f"Name: {full_name}\nEmail: {email}\nSubject: {subject}\nQuestion: {question}",
             from_email=SENDER_EMAIL,
-            recipient_list=[RECEIVER_EMAIL],
+            recipient_list=["emmaxu2005@gmail.com", "e1300538@u.nus.edu", "xusiyi2005@gmail.com"],
         )
     except Exception as e:
         return Response({"error": "Failed to send feedback email", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
