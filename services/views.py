@@ -47,11 +47,11 @@ def zoomLicense(request):
     data = get_parsed_data(ZOOM_LICENSE_URL)
     return Response(data, status=status.HTTP_200_OK)
 
-@api_view(['Get'])
-def publicityManagement(request):
-    PUBLICITY_MANAGEMENT_URL = '270cba9c9f9b4fb79660e525039acaa8'
-    data = get_parsed_data(PUBLICITY_MANAGEMENT_URL)
-    return Response(data, status=status.HTTP_200_OK)
+# @api_view(['Get'])
+# def publicityManagement(request):
+#     PUBLICITY_MANAGEMENT_URL = '270cba9c9f9b4fb79660e525039acaa8'
+#     data = get_parsed_data(PUBLICITY_MANAGEMENT_URL)
+#     return Response(data, status=status.HTTP_200_OK)
 
 def get_parsed_data(id):
     url = NOTION_PAGE_URL.format(blockid=id)
