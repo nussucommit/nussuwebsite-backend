@@ -35,11 +35,12 @@ def resilienceFund(request):
     data = get_parsed_data(RESILIENCE_FUND_URL)
     return Response(data, status=status.HTTP_200_OK)
 
-@api_view(['Get'])
-def logisticsRental(request):
-    LOGISTICS_RENTAL_URL = 'b9cd2bef52954fc58569b3bf1c5679d9'
-    data = get_parsed_data(LOGISTICS_RENTAL_URL)
-    return Response(data, status=status.HTTP_200_OK)
+## Removed
+# @api_view(['Get'])
+# def logisticsRental(request):
+#     LOGISTICS_RENTAL_URL = 'b9cd2bef52954fc58569b3bf1c5679d9'
+#     data = get_parsed_data(LOGISTICS_RENTAL_URL)
+#     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['Get'])
 def zoomLicense(request):

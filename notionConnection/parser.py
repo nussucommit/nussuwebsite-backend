@@ -163,5 +163,7 @@ def parse_file(data):
         result["url"] = data["file"]["external"]["url"]
     else:
         result["url"] = data["file"]["file"]["url"]
+    
+    result["name"] = data["file"]["name"]
 
     return result
