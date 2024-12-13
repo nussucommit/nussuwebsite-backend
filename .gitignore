@@ -1,4 +1,6 @@
 .env
 __pycache__/
 backend/staticfiles/
-venv
+.venv/
+venv/
+.DS_Store
