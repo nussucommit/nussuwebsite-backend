@@ -18,9 +18,15 @@ NOTION_PAGE_URL = 'https://api.notion.com/v1/blocks/{blockid}/children'
 NOTION_HEADER = {'Notion-Version': version, 'Authorization': token}
 
 @api_view(['Get'])
-def contact(request):
-    CONTACT_URL = '80fc40185db84c88bd30824a10add0de'
-    data = get_parsed_data(CONTACT_URL)
+def pageOne(request):
+    PAGE_ONE_URL = 'a439ca165b8f466cbbe6235e4614a5a0'
+    data = get_parsed_data(PAGE_ONE_URL)
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['Get'])
+def pageTwo(request):
+    PAGE_TWO_URL = '988df5f0e0c04496966c0d318e3a2a87'
+    data = get_parsed_data(PAGE_TWO_URL)
     return Response(data, status=status.HTTP_200_OK)
 
 def get_parsed_data(id):

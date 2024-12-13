@@ -1,3 +1,6 @@
-*.txt
 .env
 __pycache__/
+backend/staticfiles/
+.venv/
+venv/
+.DS_Store
